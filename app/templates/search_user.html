@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<h1>Seach Users</h1>
+
+<form method="post">
+   {% csrf_token %}
+   <input type="text" name="search" class="form-control" placeholder="Search" required><br>
+   <button type="submit" class="btn btn-secondary">Post</button>
+ </form>
+
+ <br>
+    {% if search %}
+        {% for i in search %}
+
+        <div class="card mb-3" style="max-width: 540px;">
+            <div class="row g-0">
+              <div class="col-md-4">
+                {% if i.profile_image %}
+                <img src="{{ i.profile_image.url }}" class="img-fluid rounded-start" alt="img" height="150px" width="150px">
+                {% else %}
+                <img src="{% static 'images/profile.jpg' %}" class="img-fluid rounded-start" alt="image">
+                {% endif %}
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title">{{ i.profile.user.username }}</h5>
+                  <p class="card-text"><a href="{% url 'profile' i.profile.user.id %}">@{{ i.profile.user.username }}</a></p>
+                  <p class="card-text"><small class="text-body-secondary">last updated:{{ i.profile.date_modified }}</small></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br><br>
+
+
+        
+        
+        {% endfor %}
+        {% else %}
+        {% if search == None %}
+        {% else %}
+        Sorry no username found!
+        {% endif %}
+    {% endif %}
+{% endblock content %}
